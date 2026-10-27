@@ -1,0 +1,431 @@
+/* ==========================================================
+   PlayDev · Desafio Grid (DIO)
+   Identidade própria: base azul-petróleo escura + destaque âmbar.
+   O layout é feito com CSS Grid.
+   ========================================================== */
+
+:root {
+  --bg: #0f1720;
+  --surface: #17222e;
+  --surface-hover: #213141;
+  --line: #2a3a4a;
+  --text: #eef3f7;
+  --text-soft: #9fb0bf;
+  --accent: #ffb020;
+  --accent-ink: #1d1400;
+
+  --topbar-h: 60px;
+  --sidebar-w: 220px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Manrope", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.4;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Layout da página: áreas nomeadas ---------- */
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  grid-template-rows: var(--topbar-h) 1fr;
+  grid-template-areas:
+    "header  header"
+    "sidebar main";
+}
+
+.topbar  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.content { grid-area: main; }
+
+/* ---------- Cabeçalho: 3 colunas (início | busca | ações) ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 0 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr) var(--sidebar-w);
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar__start,
+.topbar__end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar__end {
+  justify-content: flex-end;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s;
+}
+
+.icon-btn:hover {
+  background: var(--surface-hover);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo__mark {
+  width: 30px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--accent);
+  position: relative;
+}
+
+.logo__mark::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-40%, -50%);
+  border-left: 8px solid var(--accent-ink);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+.logo__name {
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+/* Busca: input ocupa o que sobra (1fr), botão fica com 64px */
+.search {
+  width: 100%;
+  max-width: 600px;
+  justify-self: center;
+
+  display: grid;
+  grid-template-columns: 1fr 64px;
+}
+
+.search__input {
+  min-width: 0;
+  height: 40px;
+  padding: 0 16px;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-right: 0;
+  border-radius: 20px 0 0 20px;
+}
+
+.search__input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.search__btn {
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0 20px 20px 0;
+}
+
+.search__btn:hover {
+  background: var(--surface-hover);
+}
+
+/* Avatares */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.avatar--me {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.avatar--a { background: #2f7de1; }
+.avatar--b { background: #1e9e8a; }
+.avatar--c { background: #8a5cd6; }
+.avatar--d { background: #d6553f; }
+.avatar--e { background: #2f7de1; }
+.avatar--f { background: #1e9e8a; }
+.avatar--g { background: #8a5cd6; }
+.avatar--h { background: #d6553f; }
+
+/* ---------- Menu lateral: uma coluna, itens empilhados no topo ---------- */
+.sidebar {
+  position: sticky;
+  top: var(--topbar-h);
+  height: calc(100vh - var(--topbar-h));
+  padding: 12px;
+  overflow-y: auto;
+
+  display: grid;
+  align-content: start; /* não estica as linhas pela altura toda */
+  gap: 2px;
+}
+
+.nav-item {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+.nav-item:hover {
+  background: var(--surface-hover);
+}
+
+.nav-item--active {
+  background: var(--surface);
+  font-weight: 700;
+}
+
+.sidebar__divider {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 12px 0;
+}
+
+.content {
+  padding: 0 24px 40px;
+}
+
+/* ---------- Filtros: colunas criadas automaticamente ---------- */
+.chips {
+  position: sticky;
+  top: var(--topbar-h);
+  z-index: 5;
+  padding: 12px 0;
+  background: var(--bg);
+
+  display: grid;
+  grid-auto-flow: column;       /* cada chip vira uma nova coluna */
+  grid-auto-columns: max-content; /* cada coluna tem o tamanho do conteúdo */
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.chip:hover {
+  background: var(--surface-hover);
+}
+
+.chip--active {
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.chip--active:hover {
+  background: var(--text);
+}
+
+/* ---------- Grade de vídeos ----------
+   repeat(auto-fill, minmax(260px, 1fr)): quantas colunas de pelo
+   menos 260px couberem; elas dividem o espaço em partes iguais.
+   grid-auto-flow: dense preenche os buracos deixados pelo destaque. */
+.videos {
+  padding-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-auto-flow: dense;
+  gap: 32px 16px;
+}
+
+.video {
+  display: grid;
+  grid-template-rows: auto 1fr; /* miniatura + informações */
+  gap: 12px;
+}
+
+/* Destaque: em telas largas ocupa 2 colunas e 2 linhas */
+@media (min-width: 1000px) {
+  .video--destaque {
+    grid-column: span 2;
+    grid-row: span 2;
+    grid-template-rows: 1fr auto; /* a miniatura estica na altura toda */
+  }
+
+  .video--destaque .thumb {
+    aspect-ratio: auto;
+    min-height: 260px;
+  }
+
+  .video--destaque .thumb__art {
+    font-size: clamp(2rem, 3.4vw, 3.2rem);
+  }
+
+  .video--destaque .video__title {
+    font-size: 1.25rem;
+  }
+}
+
+/* ---------- Miniaturas (só CSS) ---------- */
+.thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.thumb__art {
+  font-weight: 800;
+  font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s;
+}
+
+.thumb:hover .thumb__art {
+  transform: scale(1.06);
+}
+
+.thumb__time {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.8);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.thumb--a { background: linear-gradient(135deg, #1d4ed8, #0ea5e9); }
+.thumb--b { background: linear-gradient(135deg, #0f766e, #22c55e); }
+.thumb--c { background: linear-gradient(135deg, #6d28d9, #ec4899); }
+.thumb--d { background: linear-gradient(135deg, #b91c1c, #f97316); }
+.thumb--e { background: linear-gradient(135deg, #0369a1, #6366f1); }
+.thumb--f { background: linear-gradient(135deg, #115e59, #38bdf8); }
+.thumb--g { background: linear-gradient(135deg, #7e22ce, #3b82f6); }
+.thumb--h { background: linear-gradient(135deg, #9a3412, #eab308); }
+
+/* ---------- Informações: avatar (36px) + texto (1fr) ---------- */
+.video__info {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+}
+
+.video__title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 4px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.video__meta {
+  font-size: 0.8125rem;
+  color: var(--text-soft);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 960px) {
+  .topbar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+}
+
+@media (max-width: 800px) {
+  /* Remove a coluna do menu: sobra só header e main */
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "header"
+      "main";
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    padding: 0 12px 32px;
+  }
+
+  .topbar__end .icon-btn,
+  .logo__name {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
